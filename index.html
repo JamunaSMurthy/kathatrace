@@ -638,130 +638,41 @@
       </div>
     </div>
 
-    <div class="columns is-centered figure-panel">
-      <div class="column">
-        <img class="figure-image" src="./data/D1.png" alt="Representative dataset examples from the Kathasaritsagara (Ocean of Story).">
-        <p class="caption">
-          Representative narratives from the Kathasaritsagara.
-        </p>
-      </div>
-
-      <div class="column">
-        <img class="figure-image" src="./data/D2.png" alt="Representative dataset examples from the Panchatantra.">
-        <p class="caption">
-          Representative narratives from the Panchatantra.
-        </p>
-      </div>
-
-      <div class="column">
-        <img class="figure-image" src="./data/D3.png" alt="Representative dataset examples from Aesop's Fables.">
-        <p class="caption">
-          Representative narratives from Aesop's Fables.
-        </p>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<section class="hero is-light is-small" id="generator-comparisons">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3 has-text-centered">Generator-Agnostic Comparisons</h2>
-      <p class="subtitle is-5 has-text-centered">
-        Because KathaTrace evaluates transitions rather than any particular model's internals, the same protocol
-        applies unchanged across generators. The strip below shows the same source story ("The Cat and the Birds")
-        visualized by different generators, with semantic trajectory collapse appearing in different transitions for
-        each.
-      </p>
-
-      <div class="results-carousel">
-        <div class="item">
-          <img src="./data/comp1.png" alt="Generator-agnostic comparison strip, part 1, for the same source story across generators.">
-        </div>
-        <div class="item">
-          <img src="./data/comp2.png" alt="Generator-agnostic comparison strip, part 2, for the same source story across generators.">
-        </div>
-        <div class="item">
-          <img src="./data/comp3.png" alt="Generator-agnostic comparison strip, part 3, for the same source story across generators.">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="human-validation">
+<section class="section" id="story-examples">
   <div class="container is-max-desktop">
 
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Human Validation</h2>
+        <h2 class="title is-3">Representative Story Examples</h2>
         <div class="content has-text-justified">
           <p>
-            KathaTrace's recoverability judgments are grounded in a human preference study that compares
-            text-only, image-only, and text+image recoverability across dimensions (action, causal, intentional,
-            emotional, consequence) and across annotator groups, with significance testing to confirm the gap is not
-            noise.
+            KathaTrace draws from three distinct story sources in the `data/Stories` folder. Below are one representative example from each source, illustrating the kinds of narrative transitions used in evaluation.
           </p>
         </div>
       </div>
     </div>
 
-    <div class="columns is-centered">
+    <div class="columns is-desktop">
       <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_1.png" alt="Human preference distribution across recoverability conditions.">
-          <figcaption class="caption">Recoverability distributions across evidence conditions.</figcaption>
-        </figure>
+        <h3 class="title is-4">Aesop’s Fables</h3>
+        <p>
+          The Cat and the Birds: a compact fable where the cat's intent and the moral consequence hinge on a single visual transition.
+        </p>
       </div>
       <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_2.png" alt="Per-dimension recoverability comparison.">
-          <figcaption class="caption">Per-dimension recoverability comparison across the five transition dimensions.</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <div class="columns is-centered">
-      <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_3.png" alt="Dimension-level heatmap of semantic trajectory gap.">
-          <figcaption class="caption">Dimension-level heatmap of the Semantic Trajectory Gap.</figcaption>
-        </figure>
+        <h3 class="title is-4">Panchatantra</h3>
+        <p>
+          The Monkey and the Wedge: a strategic tale where action and causality must survive scene-to-scene visualization.
+        </p>
       </div>
       <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_4.png" alt="Ranked human preference across generators.">
-          <figcaption class="caption">Ranked human preference across generators.</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <div class="columns is-centered">
-      <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_5.png" alt="Significance testing of recoverability differences.">
-          <figcaption class="caption">Significance tests confirming the gap between text-only and image-only recoverability.</figcaption>
-        </figure>
-      </div>
-      <div class="column">
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/human_pref_6.png" alt="Robustness of human judgments across annotator groups.">
-          <figcaption class="caption">Robustness of judgments across independent annotator groups.</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h3 class="title is-4">Human–VLM Agreement</h3>
-        <figure class="figure-panel">
-          <img class="figure-image" src="./data/calibration.png" alt="Correlation and calibration plot between human and VLM judge image-only recoverability scores.">
-          <figcaption class="caption">
-            Correlation and calibration between human judgments and VLM-judge scores on image-only recoverability,
-            supporting the use of automated judges for scaled evaluation.
-          </figcaption>
-        </figure>
+        <h3 class="title is-4">The Ocean of Story</h3>
+        <p>
+          The Disguise of Vāsavadattā: a richly layered narrative that highlights intentional and emotional continuity across transitions.
+        </p>
       </div>
     </div>
 
