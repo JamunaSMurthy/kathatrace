@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="KathaTrace is a generator-agnostic protocol for diagnosing semantic trajectory collapse in generated visual narratives, with the KathaBench-25K benchmark and the Semantic Trajectory Gap (STG) metric.">
+  <meta name="keywords" content="KathaTrace, semantic trajectory collapse, KathaBench-25K, story visualization, storyboard generation, Semantic Trajectory Gap, STG, Semantic Compass, visual narrative benchmark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KathaTrace: Diagnosing Semantic Trajectory Collapse in Generated Visual Narratives</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <style>
+    body {
+      font-family: "Noto Sans", sans-serif;
+    }
+
+    .publication-title {
+      font-family: "Google Sans", sans-serif;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .publication-authors {
+      font-family: "Google Sans", sans-serif;
+    }
+
+    .publication-authors a {
+      color: hsl(204, 86%, 53%) !important;
+    }
+
+    .author-block {
+      display: inline-block;
+    }
+
+    .publication-links {
+      margin-top: 1.35rem;
+    }
+
+    .publication-links .link-block {
+      display: inline-block;
+      margin: 0.25rem;
+    }
+
+    .button.is-dark {
+      background-color: #363636;
+    }
+
+    .kathatrace {
+      font-variant: small-caps;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .teaser .hero-body {
+      padding-top: 0;
+    }
+
+    .publication-teaser {
+      margin-top: 1.5rem;
+    }
+
+    .teaser img {
+      display: block;
+      width: 100%;
+      border-radius: 0.35rem;
+    }
+
+    .results-carousel {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0.25rem 0 1rem;
+    }
+
+    .results-carousel .item {
+      flex: 0 0 min(86vw, 900px);
+      scroll-snap-align: center;
+      background: #fff;
+      border-radius: 0.45rem;
+      box-shadow: 0 0.5rem 1.5rem rgba(10, 10, 10, 0.08);
+      overflow: hidden;
+    }
+
+    .results-carousel img,
+    .figure-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      color: #4a4a4a;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      margin-top: 0.75rem;
+    }
+
+    .paper-cta {
+      border: 1px solid #e8e8e8;
+      border-radius: 0.35rem;
+      padding: 1.5rem;
+      background: #fafafa;
+    }
+
+    .figure-panel {
+      margin-top: 1.25rem;
+    }
+
+    .metric-table {
+      width: 100%;
+      font-size: 0.95rem;
+    }
+
+    .metric-table th,
+    .metric-table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .metric-table th:first-child,
+    .metric-table td:first-child {
+      text-align: left;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .stat-item {
+      border: 1px solid #e8e8e8;
+      border-radius: 0.35rem;
+      padding: 1rem;
+      background: #fff;
+    }
+
+    .stat-value {
+      display: block;
+      color: #363636;
+      font-family: "Google Sans", sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      display: block;
+      color: #6a6a6a;
+      font-size: 0.92rem;
+      margin-top: 0.3rem;
+    }
+
+    .claim-box {
+      border-left: 4px solid #363636;
+      background: #fafafa;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+      border-radius: 0.25rem;
+    }
+
+    .claim-box strong {
+      color: #363636;
+    }
+
+    .contribution-card {
+      border: 1px solid #e8e8e8;
+      border-radius: 0.45rem;
+      padding: 1.25rem;
+      background: #fff;
+      height: 100%;
+    }
+
+    .contribution-card h3 {
+      font-family: "Google Sans", sans-serif;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer .icon-link {
+      color: #363636;
+      font-size: 1.35rem;
+      margin: 0 0.5rem;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .faq-item {
+      border: 1px solid #e8e8e8;
+      border-radius: 0.35rem;
+      background: #fff;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .faq-item summary {
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      font-family: "Google Sans", sans-serif;
+      font-weight: 700;
+      list-style: none;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::before {
+      content: "+";
+      display: inline-block;
+      width: 1.1rem;
+      color: #363636;
+      font-weight: 700;
+    }
+
+    .faq-item[open] summary::before {
+      content: "\2212";
+    }
+
+    .faq-item .faq-answer {
+      padding: 0 1.25rem 1.1rem 2.35rem;
+      color: #4a4a4a;
+      line-height: 1.6;
+    }
+
+    @media screen and (max-width: 768px) {
+      .publication-title {
+        font-size: 2.0rem !important;
+      }
+
+      .results-carousel .item {
+        flex-basis: 92vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="main-navbar" class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/JamunaSMurthy/KathaBench-25K" target="_blank" rel="noopener">
+        <span class="icon">
+          <i class="fas fa-home"></i>
+        </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Sections
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="#abstract">Abstract</a>
+          <a class="navbar-item" href="#core-idea">Core Idea</a>
+          <a class="navbar-item" href="#novelty">Novelty</a>
+          <a class="navbar-item" href="#method">Method Overview</a>
+          <a class="navbar-item" href="#dataset">KathaBench-25K</a>
+          <a class="navbar-item" href="#generator-comparisons">Generator Comparisons</a>
+          <a class="navbar-item" href="#human-validation">Human Validation</a>
+          <a class="navbar-item" href="#diagnostics">Diagnostic Case Studies</a>
+          <a class="navbar-item" href="#boundary-cases">Boundary Cases</a>
+          <a class="navbar-item" href="#extensibility">Extensibility</a>
+          <a class="navbar-item" href="#results">Results</a>
+          <a class="navbar-item" href="#faq">FAQ</a>
+          <a class="navbar-item" href="#BibTeX">BibTeX</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <h1 class="title is-1 publication-title">
+            KathaTrace: Diagnosing Semantic Trajectory Collapse in Generated Visual Narratives
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Jamuna S. Murthy<sup>1</sup>,</span>
+            <span class="author-block">Amin Karimi Monsefi<sup>2</sup>,</span>
+            <span class="author-block">Rajiv Ramnath<sup>2</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Ramaiah Institute of Technology,</span>
+            <span class="author-block"><sup>2</sup>The Ohio State University</span>
+          </div>
+
+          <div class="teaser publication-teaser">
+            <img src="./data/teaser.png" alt="Semantic trajectory collapse: a faithful storyboard versus a collapsed storyboard that looks coherent but loses transition meaning.">
+            <h2 class="subtitle has-text-centered">
+              <span class="kathatrace">KathaTrace</span> diagnoses storyboards that look visually coherent while the
+              semantic meaning of how one scene leads to the next quietly disappears.
+            </h2>
+          </div>
+
+          <div class="claim-box has-text-left">
+            <p>
+              <strong>Central idea.</strong>
+              Visual quality and scene coherence do not guarantee that a viewer can recover why one scene leads to the
+              next. KathaTrace isolates this failure mode—<em>semantic trajectory collapse</em>—by testing transition
+              recoverability under text-only, image-only, and text+image evidence, and quantifies the loss as the
+              Semantic Trajectory Gap (STG).
+            </p>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/iamjamuna/KathaBench-25K" class="external-link button is-normal is-rounded is-dark" target="_blank" rel="noopener">
+                  <span class="icon"><i class="ai ai-open-access"></i></span>
+                  <span>KathaBench-25K</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/JamunaSMurthy/KathaBench-25K" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/JamunaSMurthy/kathatrace-demo" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="far fa-images"></i></span>
+                  <span>Demo</span>
+                </a>
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            Visual narratives are central to storyboards, comics, children's media and film previsualization, where
+            viewers understand stories from images alone. Recent generators like StoryDiffusion produce coherent
+            sequences, but visual coherence does not guarantee that source-story transition meaning remains
+            recoverable. Existing benchmarks assess visual quality, content faithfulness, and scene coherence, but
+            miss a critical failure mode: storyboards where scenes appear visually coherent while the semantic link
+            between scenes disappears.
+          </p>
+
+          <p>
+            We introduce <span class="kathatrace">KathaTrace</span>, a generator-agnostic protocol for diagnosing
+            <em>semantic trajectory collapse</em>—loss of transition meaning needed to understand how one scene
+            follows another. KathaTrace evaluates transitions under three evidence conditions (text-only, image-only,
+            text+image) and filters ambiguous items. We contribute
+            <span class="kathatrace">KathaBench-25K</span>, with 5,000 narratives from classical collections (Aesop,
+            Panchatantra, Kathasaritsagara), 20,000 transitions, and 28,712 recoverability questions.
+          </p>
+
+          <p>
+            We define <strong>Semantic Trajectory Gap (STG)</strong> as text-only minus image-only recoverability,
+            measuring transition meaning lost during visualization. Human validation yields Fleiss' κ = 0.845.
+            Experiments across state-of-the-art generators show substantial STG (23.5 ± 1.3).
+            <strong>Semantic Compass</strong>, an actionability probe, uses KathaTrace signals for post-generation
+            repair, improving storyboard selection.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Paper</h2>
+        <div class="paper-cta">
+          <p class="mb-4">
+            The full manuscript includes the task formulation, KathaBench-25K construction protocol, semantic
+            trajectory representation, recoverability questions and evidence conditions, validity filtering, the
+            Semantic Trajectory Gap definition, contrastive variants, judge aggregation, Semantic Compass, main
+            results, ablations, and extended qualitative analysis.
+          </p>
+          <a href="#" class="button is-normal is-rounded is-dark">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>Open Paper</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section is-light" id="core-idea">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Core Idea: Trajectory Meaning, Not Just Scene Quality</h2>
+      </div>
+    </div>
+
+    <div class="content has-text-justified">
+      <p>
+        KathaTrace starts from a simple observation: a storyboard can satisfy every standard quality check—sharp
+        images, consistent characters, smooth visual continuity—and still fail at the one thing visual narratives
+        exist to do, which is to let a viewer follow the story from images alone. A transition between two scenes can
+        look fine while the causal, intentional, or emotional link connecting them silently disappears.
+      </p>
+
+      <p>
+        Rather than scoring images in isolation, KathaTrace evaluates each scene-to-scene transition under three
+        evidence conditions: text-only (can a reader recover the transition from narration alone?), image-only (can a
+        viewer recover it from the generated images alone?), and text+image (does combined evidence help?). The drop
+        from text-only to image-only recoverability is the Semantic Trajectory Gap—a direct measurement of meaning
+        lost during visualization.
+      </p>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="contribution-card">
+          <h3>Text-only evidence</h3>
+          <p>
+            Establishes the upper bound on transition recoverability using only the source narrative, before any
+            image generation occurs.
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="contribution-card">
+          <h3>Image-only evidence</h3>
+          <p>
+            Measures what a viewer can actually recover about the transition from the generated storyboard alone,
+            exposing semantic trajectory collapse.
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="contribution-card">
+          <h3>Semantic Trajectory Gap (STG)</h3>
+          <p>
+            Text-only minus image-only recoverability: a generator-agnostic score for how much transition meaning a
+            visualization pipeline loses.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="novelty">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">What Is New?</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="contribution-card">
+          <h3>1. A failure mode existing benchmarks miss</h3>
+          <p>
+            Prior visual narrative benchmarks score image quality, content faithfulness, and local scene coherence.
+            None directly test whether transition meaning—why scene N leads to scene N+1—survives visualization.
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="contribution-card">
+          <h3>2. A generator-agnostic diagnostic protocol</h3>
+          <p>
+            KathaTrace evaluates transitions under three evidence conditions and filters ambiguous items via validity
+            filtering, producing a protocol that applies to any story visualization system without retraining.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="contribution-card">
+          <h3>3. KathaBench-25K</h3>
+          <p>
+            5,000 narratives from Aesop, Panchatantra, and Kathasaritsagara, with 25,000 scenes, 20,000 transitions,
+            28,712 recoverability questions, and 10,000 contrastive variants, validated with Fleiss' κ = 0.845.
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="contribution-card">
+          <h3>4. Semantic Compass</h3>
+          <p>
+            An actionability probe that turns KathaTrace's diagnostic signals into a post-generation repair and
+            selection mechanism, improving which storyboard candidates get kept.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section is-light" id="method">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            Each source story is decomposed into scenes and scene-to-scene transitions. For every transition,
+            KathaTrace generates recoverability questions targeting the semantic link between scenes (action, causal,
+            intentional, emotional, and consequence dimensions), then poses those questions under text-only,
+            image-only, and text+image evidence. Validity filtering removes ambiguous items before judge aggregation
+            computes per-dimension recoverability and the overall Semantic Trajectory Gap.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/method_overview.png" alt="KathaTrace framework: scenes decomposed into transitions, evaluated under text-only, image-only, and text+image evidence to compute STG and drive Semantic Compass.">
+          <figcaption class="caption">
+            KathaTrace framework. Scenes and transitions are extracted from each narrative, evaluated under three
+            evidence conditions, and aggregated into the Semantic Trajectory Gap and per-dimension diagnostics that
+            feed the Semantic Compass repair signal.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">A Benchmark Failure Case</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/failure_case.png" alt="Case study where a storyboard omits the rescue transition, losing the reciprocity moral of the story.">
+          <figcaption class="caption">
+            Case study: a generated storyboard omits the rescue transition entirely. The images remain visually
+            coherent, but the reciprocity moral that depends on that transition becomes unrecoverable from images
+            alone.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="dataset">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">KathaBench-25K</h2>
+        <div class="content has-text-justified">
+          <p>
+            KathaBench-25K draws on three classical narrative collections chosen for their dense use of causal,
+            intentional, and moral transitions: Aesop's Fables, the Panchatantra, and the Kathasaritsagara ("Ocean of
+            Story"). Each story is annotated into scenes and transitions, with recoverability questions and
+            contrastive variants generated and validated for use across text-only, image-only, and text+image
+            evaluation.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <span class="stat-value">5,000</span>
+        <span class="stat-label">source narratives</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-value">25,000</span>
+        <span class="stat-label">annotated scenes</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-value">20,000</span>
+        <span class="stat-label">scene-to-scene transitions</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-value">28,712</span>
+        <span class="stat-label">recoverability questions</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-value">10,000</span>
+        <span class="stat-label">contrastive variants</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-value">κ = 0.845</span>
+        <span class="stat-label">Fleiss' kappa, human validation</span>
+      </div>
+    </div>
+
+    <div class="columns is-centered figure-panel">
+      <div class="column">
+        <img class="figure-image" src="./data/D1.png" alt="Representative dataset examples from the Kathasaritsagara (Ocean of Story).">
+        <p class="caption">
+          Representative narratives from the Kathasaritsagara.
+        </p>
+      </div>
+
+      <div class="column">
+        <img class="figure-image" src="./data/D2.png" alt="Representative dataset examples from the Panchatantra.">
+        <p class="caption">
+          Representative narratives from the Panchatantra.
+        </p>
+      </div>
+
+      <div class="column">
+        <img class="figure-image" src="./data/D3.png" alt="Representative dataset examples from Aesop's Fables.">
+        <p class="caption">
+          Representative narratives from Aesop's Fables.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="hero is-light is-small" id="generator-comparisons">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Generator-Agnostic Comparisons</h2>
+      <p class="subtitle is-5 has-text-centered">
+        Because KathaTrace evaluates transitions rather than any particular model's internals, the same protocol
+        applies unchanged across generators. The strip below shows the same source story ("The Cat and the Birds")
+        visualized by different generators, with semantic trajectory collapse appearing in different transitions for
+        each.
+      </p>
+
+      <div class="results-carousel">
+        <div class="item">
+          <img src="./data/comp1.png" alt="Generator-agnostic comparison strip, part 1, for the same source story across generators.">
+        </div>
+        <div class="item">
+          <img src="./data/comp2.png" alt="Generator-agnostic comparison strip, part 2, for the same source story across generators.">
+        </div>
+        <div class="item">
+          <img src="./data/comp3.png" alt="Generator-agnostic comparison strip, part 3, for the same source story across generators.">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="human-validation">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Human Validation</h2>
+        <div class="content has-text-justified">
+          <p>
+            KathaTrace's recoverability judgments are grounded in a human preference study that compares
+            text-only, image-only, and text+image recoverability across dimensions (action, causal, intentional,
+            emotional, consequence) and across annotator groups, with significance testing to confirm the gap is not
+            noise.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_1.png" alt="Human preference distribution across recoverability conditions.">
+          <figcaption class="caption">Recoverability distributions across evidence conditions.</figcaption>
+        </figure>
+      </div>
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_2.png" alt="Per-dimension recoverability comparison.">
+          <figcaption class="caption">Per-dimension recoverability comparison across the five transition dimensions.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_3.png" alt="Dimension-level heatmap of semantic trajectory gap.">
+          <figcaption class="caption">Dimension-level heatmap of the Semantic Trajectory Gap.</figcaption>
+        </figure>
+      </div>
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_4.png" alt="Ranked human preference across generators.">
+          <figcaption class="caption">Ranked human preference across generators.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_5.png" alt="Significance testing of recoverability differences.">
+          <figcaption class="caption">Significance tests confirming the gap between text-only and image-only recoverability.</figcaption>
+        </figure>
+      </div>
+      <div class="column">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/human_pref_6.png" alt="Robustness of human judgments across annotator groups.">
+          <figcaption class="caption">Robustness of judgments across independent annotator groups.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Human–VLM Agreement</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/calibration.png" alt="Correlation and calibration plot between human and VLM judge image-only recoverability scores.">
+          <figcaption class="caption">
+            Correlation and calibration between human judgments and VLM-judge scores on image-only recoverability,
+            supporting the use of automated judges for scaled evaluation.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section is-light" id="diagnostics">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Diagnostic Case Studies</h2>
+        <div class="content has-text-justified">
+          <p>
+            The Semantic Trajectory Gap decomposes into per-dimension failures. These case studies isolate each
+            dimension: action failure, causal failure, intentional failure, emotional failure, and consequence
+            failure, using well-known fables where the moral hinges on a specific transition type.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <h3 class="title is-4">Action failure — "The Monkey and the Wedge"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/hardcase_action.png" alt="Action-failure case study from The Monkey and the Wedge.">
+          <figcaption class="caption">
+            The physical action that drives the outcome is lost between generated scenes.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="column">
+        <h3 class="title is-4">Causal failure — "The Boy Who Cried Wolf"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/hardcase_causal.png" alt="Causal-failure case study from The Boy Who Cried Wolf.">
+          <figcaption class="caption">
+            The causal chain linking repeated deception to its consequence becomes unrecoverable from images alone.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <h3 class="title is-4">Intentional failure — "The Cat and the Birds"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/hardcase_intention.png" alt="Intentional-failure case study from The Cat and the Birds.">
+          <figcaption class="caption">
+            The cat's underlying intention—central to the moral—does not survive visualization.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="column">
+        <h3 class="title is-4">Emotional failure — "Sunda and Upasunda"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/hardcase_emotion.png" alt="Emotional-failure case study from Sunda and Upasunda.">
+          <figcaption class="caption">
+            The emotional escalation that motivates the climax is flattened across transitions.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Consequence failure — "The Goose That Laid the Golden Eggs"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/hardcase_consequence.png" alt="Consequence-failure case study from The Goose That Laid the Golden Eggs.">
+          <figcaption class="caption">
+            The link between the greedy action and its irreversible consequence disappears between scenes.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="boundary-cases">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Boundary and Hard Cases</h2>
+        <div class="content has-text-justified">
+          <p>
+            Not every transition loss is equally diagnosable. These boundary cases stress-test KathaTrace's validity
+            filtering on transitions that are inherently hard to visualize: symbolic sacrifice, hidden intention, and
+            long-range reciprocity spanning many scenes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <h3 class="title is-4">Symbolic sacrifice — "King Shibi and the Dove"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/boundary1.png" alt="Boundary case: symbolic sacrifice in King Shibi and the Dove.">
+          <figcaption class="caption">A symbolic act of sacrifice that resists literal visual depiction.</figcaption>
+        </figure>
+      </div>
+
+      <div class="column">
+        <h3 class="title is-4">Hidden intention — "The Monkey and the Crocodile"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/boundary2.png" alt="Boundary case: hidden intention in The Monkey and the Crocodile.">
+          <figcaption class="caption">An intention deliberately concealed from other characters, and from the viewer.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Long-range reciprocity — "The Elephants and the Mice"</h3>
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/boundary3.png" alt="Boundary case: long-range reciprocity in The Elephants and the Mice.">
+          <figcaption class="caption">A reciprocal payoff that depends on a transition many scenes earlier in the story.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section is-light" id="extensibility">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Extensibility Beyond Storyboards</h2>
+        <div class="content has-text-justified">
+          <p>
+            KathaTrace is evaluated primarily on storyboard-style narrative generation, but the transition-level
+            recoverability protocol is not tied to any single visual format. The same evidence-condition methodology
+            extends to comics, illustrated pages, and video keyframes, wherever a sequence of images is meant to
+            carry a story's meaning.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <figure class="figure-panel">
+          <img class="figure-image" src="./data/extensibility.png" alt="Cross-format extensibility overview spanning comics, illustrated pages, and video keyframes.">
+          <figcaption class="caption">
+            Cross-format extensibility: the same transition-recoverability protocol applies across comics,
+            illustrated pages, and video keyframes.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="columns is-centered figure-panel">
+      <div class="column">
+        <h3 class="title is-4">Comic-style pilot — reciprocity at the lunch table</h3>
+        <img class="figure-image" src="./data/comic_pilot_1.png" alt="Comic-style pilot example illustrating a lunch-table reciprocity transition.">
+        <p class="caption">A modern comic-style retelling tests the protocol outside classical fable settings.</p>
+      </div>
+
+      <div class="column">
+        <h3 class="title is-4">Comic-style pilot — spare-bicycle reciprocity</h3>
+        <img class="figure-image" src="./data/comic_pilot_2.png" alt="Comic-style pilot example illustrating a spare-bicycle reciprocity transition.">
+        <p class="caption">A second comic pilot confirms the protocol generalizes across everyday reciprocity scenarios.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            Across state-of-the-art story visualization generators, KathaTrace reveals a substantial and consistent
+            Semantic Trajectory Gap, confirming that semantic trajectory collapse is a widespread failure mode rather
+            than an artifact of any single model. The evaluator-baseline ablation shows that a naive recoverability
+            evaluator overstates how much transition meaning survives visualization, underscoring the need for
+            KathaTrace's evidence-condition protocol and validity filtering.
+          </p>
+
+          <p>
+            Semantic Compass, which consumes per-dimension KathaTrace diagnostics as an actionability signal,
+            improves storyboard selection over generation pipelines that ignore trajectory-level feedback.
+          </p>
+        </div>
+
+        <div class="table-container">
+          <table class="table is-striped is-hoverable metric-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>STG ↓</th>
+                <th>Text-only Recov.</th>
+                <th>Image-only Recov.</th>
+                <th>Text+Image Recov.</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Naive Evaluator Baseline</td>
+                <td>28.9 ± 1.5</td>
+                <td>91.2</td>
+                <td>62.3</td>
+                <td>88.7</td>
+              </tr>
+
+              <tr>
+                <td>StoryDiffusion</td>
+                <td>25.1 ± 1.4</td>
+                <td>92.0</td>
+                <td>66.9</td>
+                <td>90.1</td>
+              </tr>
+
+              <tr>
+                <td>Other SOTA Generators (avg.)</td>
+                <td>24.6 ± 1.3</td>
+                <td>91.6</td>
+                <td>67.0</td>
+                <td>89.8</td>
+              </tr>
+
+              <tr>
+                <td><strong>KathaTrace protocol (mean over generators)</strong></td>
+                <td><strong>23.5 ± 1.3</strong></td>
+                <td><strong>91.8</strong></td>
+                <td><strong>68.3</strong></td>
+                <td><strong>90.4</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          STG is text-only minus image-only recoverability (lower is better — less meaning lost during
+          visualization). Figures are illustrative aggregates reported across the KathaBench-25K test split.
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            KathaTrace builds on advances in story visualization, narrative consistency evaluation, and
+            VLM-as-judge methodology. Unlike benchmarks that score images for quality, faithfulness, or local
+            coherence, KathaTrace focuses on whether the meaning of a transition between scenes survives
+            visualization at all.
+          </p>
+
+          <p>
+            <strong>Story visualization generators:</strong>
+            <a href="https://arxiv.org/abs/2405.01434" target="_blank" rel="noopener">StoryDiffusion</a>,
+            <a href="https://arxiv.org/abs/2504.05800" target="_blank" rel="noopener">StoryBooth</a>,
+            <a href="https://arxiv.org/abs/2407.12899" target="_blank" rel="noopener">DreamStory</a>,
+            <a href="https://arxiv.org/abs/2312.02252" target="_blank" rel="noopener">StoryGPT-V</a>,
+            <a href="https://arxiv.org/abs/2211.13319" target="_blank" rel="noopener">Make-A-Story</a>,
+            <a href="https://github.com/yonseivnl/cmota" target="_blank" rel="noopener">CMOTA</a>,
+            <a href="https://arxiv.org/abs/2506.12198" target="_blank" rel="noopener">ViSTA</a>, and
+            <a href="https://arxiv.org/abs/2508.09983" target="_blank" rel="noopener">Story2Board</a>.
+          </p>
+
+          <p>
+            <strong>Story/narrative benchmarks:</strong>
+            <a href="https://arxiv.org/abs/2603.28082" target="_blank" rel="noopener">LogiStory / LogicTale</a>,
+            <a href="https://arxiv.org/abs/2503.20871" target="_blank" rel="noopener">VinaBench</a>,
+            <a href="https://arxiv.org/abs/2505.24862" target="_blank" rel="noopener">ViStoryBench</a>,
+            <a href="https://arxiv.org/abs/2308.11606" target="_blank" rel="noopener">StoryBench</a>, and
+            <a href="https://arxiv.org/abs/2602.23969" target="_blank" rel="noopener">MSVBench</a>.
+          </p>
+
+          <p>
+            <strong>Text–image alignment / faithfulness metrics:</strong>
+            <a href="https://arxiv.org/abs/2303.11897" target="_blank" rel="noopener">TIFA</a>,
+            <a href="https://arxiv.org/abs/2310.18235" target="_blank" rel="noopener">DSG</a>, and
+            <a href="https://arxiv.org/abs/2404.01291" target="_blank" rel="noopener">VQAScore</a>.
+          </p>
+
+          <p>
+            Unlike these benchmarks, which score image quality, faithfulness, or local scene coherence, KathaTrace
+            specifically targets whether the meaning of a transition between scenes—why one scene leads to the
+            next—survives visualization at all.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section is-light" id="faq">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Frequently Asked Questions</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+
+        <details class="faq-item">
+          <summary>Why is another benchmark needed?</summary>
+          <p class="faq-answer">
+            Existing benchmarks primarily evaluate visual quality, image-text alignment, consistency, or generic
+            question answering. KathaTrace instead evaluates transition recoverability: whether the semantic changes
+            connecting consecutive events remain recoverable from the generated storyboard. This isolates narrative
+            meaning preservation rather than visual plausibility, enabling diagnosis of failures that remain
+            undetected by existing fidelity metrics.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why is recoverability a better evaluation objective?</summary>
+          <p class="faq-answer">
+            The goal of storyboard generation is not merely to produce visually coherent images, but to preserve the
+            narrative conveyed by the source story. Recoverability directly measures whether an independent
+            evaluator can reconstruct the intended transition semantics from the generated storyboard. This
+            operationalizes semantic preservation independently of image aesthetics or language similarity.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why are transitions the evaluation unit instead of scenes?</summary>
+          <p class="faq-answer">
+            Narrative meaning primarily resides in changes between events, rather than in isolated scenes.
+            Individual scenes often remain visually plausible even when the causal, emotional, motivational, or
+            consequential transition connecting them has been lost. Evaluating transitions therefore targets the
+            semantic structure that distinguishes a coherent narrative from a sequence of unrelated images.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why does STG measure semantic loss?</summary>
+          <p class="faq-answer">
+            Text-only recoverability approximates the semantic information available in the source narrative, while
+            image-only recoverability measures how much of that information remains accessible after storyboard
+            generation. Their difference therefore estimates the semantic information lost during visual generation.
+            The metric is further validated through human correlation, evaluator agreement, robustness analyses, and
+            multiple baseline comparisons.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do we know the annotations are reliable?</summary>
+          <p class="faq-answer">
+            All annotations follow a fixed schema with predefined transition fields, accepted-answer sets, ambiguity
+            filtering, and multi-stage human validation. The released benchmark additionally includes validation
+            metadata, inter-annotator agreement statistics, provenance information, and quality-control procedures,
+            allowing users to inspect annotation reliability rather than treating annotations as opaque labels.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Could the benchmark simply be measuring image quality?</summary>
+          <p class="faq-answer">
+            Multiple controls suggest otherwise. Planner-only improvements substantially reduce STG even when the
+            renderer is fixed, whereas changing renderers alone produces smaller improvements. Furthermore, semantic
+            contrastive experiments demonstrate that visually similar but semantically incorrect transitions still
+            receive substantially worse recoverability scores, indicating that STG measures semantic preservation
+            rather than visual appearance alone.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why use VLM judges instead of humans?</summary>
+          <p class="faq-answer">
+            Large-scale evaluation requires tens of thousands of recoverability decisions, making fully human
+            evaluation impractical. KathaTrace therefore uses structured VLM judges calibrated against human
+            evaluations. Human studies, judge agreement experiments, and multi-judge analyses demonstrate that the
+            observed trends remain stable across judge families while maintaining scalability and reproducibility.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Is the benchmark practical for the community?</summary>
+          <p class="faq-answer">
+            The released benchmark supports multiple evaluation budgets. Besides the full benchmark, calibrated
+            subsets (e.g., Human-Gold-1K and Strict-Gold-400) enable rapid experimentation while preserving the same
+            evaluation protocol. Since annotations and evaluation metadata are precomputed, users only generate
+            storyboards and execute the released evaluation pipeline.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What scientific insight does the benchmark provide?</summary>
+          <p class="faq-answer">
+            KathaTrace reveals which transition types are systematically lost during storyboard generation,
+            distinguishes planning failures from rendering failures, quantifies ambiguity across narrative
+            categories, localizes transition-level errors, and identifies narrative structures that remain
+            challenging despite visually coherent outputs. These analyses provide actionable understanding rather
+            than only leaderboard rankings.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why will the community adopt this benchmark?</summary>
+          <p class="faq-answer">
+            The benchmark addresses an evaluation dimension not covered by existing metrics while remaining
+            reproducible and extensible. It provides standardized annotations, fixed evaluation protocols, released
+            prompts, accepted-answer sets, confidence intervals, and scalable evaluation subsets. Consequently, it
+            enables consistent comparison across methods while diagnosing semantic failures that traditional
+            visual-fidelity metrics overlook.
+          </p>
+        </details>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+
+    <pre><code>@article{murthy2026kathatrace,
+  author    = {Murthy, Jamuna S. and Monsefi, Amin Karimi and Ramnath, Rajiv},
+  title     = {KathaTrace: Diagnosing Semantic Trajectory Collapse in Generated Visual Narratives},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+
+    <div class="content has-text-centered">
+      <a class="icon-link" href="#" aria-label="Paper PDF">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+
+      <a class="icon-link" href="https://github.com/JamunaSMurthy/KathaBench-25K" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            © 2026 Jamuna S. Murthy, Amin Karimi Monsefi, and Rajiv Ramnath. All rights reserved.
+            This website presents research materials for KathaTrace and KathaBench-25K. The protocol, benchmark,
+            and examples are provided for research and informational purposes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var burgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
+
+    burgers.forEach(function (burger) {
+      burger.addEventListener("click", function () {
+        var target = document.getElementById(burger.dataset.target);
+        burger.classList.toggle("is-active");
+        target.classList.toggle("is-active");
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
