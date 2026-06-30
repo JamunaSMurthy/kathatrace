@@ -13,22 +13,119 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
   <style>
+    :root {
+      --kt-bg: #03050a;
+      --kt-bg-2: #0a0e1a;
+      --kt-bg-3: #0e1428;
+      --kt-panel: #0c1122;
+      --kt-border: rgba(255,255,255,0.09);
+      --kt-border-strong: rgba(255,255,255,0.18);
+      --kt-text: #e7ebf6;
+      --kt-text-dim: #9aa3c2;
+      --kt-text-faint: #6b7390;
+      --kt-accent: #2563eb;
+      --kt-accent-2: #06b6d4;
+      --kt-accent-3: #22d3ee;
+      --kt-grad: linear-gradient(135deg, #1d4ed8 0%, #0891b2 55%, #22d3ee 100%);
+    }
+
+    html { background: var(--kt-bg); }
+
     body {
       font-family: "Noto Sans", sans-serif;
+      background: var(--kt-bg);
+      color: var(--kt-text);
+      position: relative;
+    }
+
+    /* ---------- ambient full-page animated orbs ---------- */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 40% at 12% 8%, rgba(37,99,235,0.20), transparent 60%),
+        radial-gradient(ellipse 50% 38% at 92% 18%, rgba(6,182,212,0.16), transparent 60%),
+        radial-gradient(ellipse 48% 36% at 20% 85%, rgba(34,211,238,0.12), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 92%, rgba(37,99,235,0.14), transparent 60%);
+      background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
+      animation: orb-drift 26s ease-in-out infinite alternate;
+    }
+    @keyframes orb-drift {
+      0%   { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%; }
+      100% { background-position: 18% 12%, 82% 22%, 15% 80%, 88% 85%; }
+    }
+    .container, nav, header, footer, section { position: relative; z-index: 1; }
+
+    a { color: var(--kt-accent-3); }
+    a:hover { color: var(--kt-accent-2); }
+
+    /* ---------- generic dark text overrides for Bulma defaults ---------- */
+    .title, .subtitle { color: var(--kt-text); }
+    .content p, .content li, p, li { color: var(--kt-text-dim); }
+    .content strong, strong { color: var(--kt-text); }
+
+    /* ---------- navbar ---------- */
+    .navbar {
+      background: rgba(8,11,22,0.85);
+      backdrop-filter: blur(10px) saturate(140%);
+      border-bottom: 2px solid transparent;
+      border-image: var(--kt-grad) 1;
+    }
+    .navbar-item, .navbar-link {
+      background: transparent !important;
+      color: var(--kt-text-dim) !important;
+    }
+    .navbar-item:hover, .navbar-link:hover,
+    .navbar-item.is-active {
+      color: var(--kt-accent-3) !important;
+    }
+    .navbar-dropdown {
+      background: var(--kt-panel);
+      border: 1px solid var(--kt-border);
+    }
+    .navbar-burger span { background-color: var(--kt-text); }
+
+    /* ---------- animated hero background ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 10%, rgba(37,99,235,0.22), transparent 60%),
+        radial-gradient(ellipse 60% 45% at 90% 15%, rgba(6,182,212,0.18), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 50% 95%, rgba(34,211,238,0.12), transparent 60%),
+        var(--kt-bg);
+      background-size: 200% 200%, 200% 200%, 200% 200%, auto;
+      animation: hero-drift 18s ease-in-out infinite alternate;
+    }
+    @keyframes hero-drift {
+      0%   { background-position: 0% 0%, 100% 0%, 50% 100%, 0 0; }
+      100% { background-position: 20% 15%, 80% 25%, 60% 80%, 0 0; }
     }
 
     .publication-title {
       font-family: "Google Sans", sans-serif;
       font-weight: 700;
       line-height: 1.1;
+      background: var(--kt-grad);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-shimmer 6s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 28px rgba(34,211,238,0.18));
+    }
+    @keyframes title-shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 100% center; }
     }
 
     .publication-authors {
       font-family: "Google Sans", sans-serif;
+      color: var(--kt-text-dim);
     }
 
     .publication-authors a {
-      color: hsl(204, 86%, 53%) !important;
+      color: var(--kt-accent-3) !important;
     }
 
     .author-block {
@@ -44,14 +141,11 @@
       margin: 0.25rem;
     }
 
-    .button.is-dark {
-      background-color: #363636;
-    }
-
     .kathatrace {
       font-variant: small-caps;
       font-weight: 700;
       letter-spacing: 0.02em;
+      color: var(--kt-accent-3);
     }
 
     .teaser .hero-body {
@@ -65,7 +159,8 @@
     .teaser img {
       display: block;
       width: 100%;
-      border-radius: 0.35rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 0 1px var(--kt-border), 0 20px 60px rgba(6,182,212,0.16);
     }
 
     .results-carousel {
@@ -79,9 +174,10 @@
     .results-carousel .item {
       flex: 0 0 min(86vw, 900px);
       scroll-snap-align: center;
-      background: #fff;
-      border-radius: 0.45rem;
-      box-shadow: 0 0.5rem 1.5rem rgba(10, 10, 10, 0.08);
+      background: var(--kt-panel);
+      border: 1px solid var(--kt-border);
+      border-radius: 0.6rem;
+      box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.35);
       overflow: hidden;
     }
 
@@ -93,17 +189,17 @@
     }
 
     .caption {
-      color: #4a4a4a;
+      color: var(--kt-text-dim);
       font-size: 0.95rem;
       line-height: 1.55;
       margin-top: 0.75rem;
     }
 
     .paper-cta {
-      border: 1px solid #e8e8e8;
-      border-radius: 0.35rem;
+      border: 1px solid var(--kt-border);
+      border-radius: 0.5rem;
       padding: 1.5rem;
-      background: #fafafa;
+      background: var(--kt-panel);
     }
 
     .figure-panel {
@@ -126,6 +222,25 @@
       text-align: left;
     }
 
+    .table {
+      background: var(--kt-panel);
+      color: var(--kt-text);
+    }
+    .table thead th {
+      color: var(--kt-accent-3);
+      border-color: var(--kt-border-strong);
+      background: rgba(34,211,238,0.06);
+    }
+    .table td, .table th {
+      border-color: var(--kt-border);
+    }
+    .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+      background: rgba(255,255,255,0.03);
+    }
+    .table.is-hoverable tbody tr:hover {
+      background: rgba(6,182,212,0.08);
+    }
+
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -134,71 +249,106 @@
     }
 
     .stat-item {
-      border: 1px solid #e8e8e8;
-      border-radius: 0.35rem;
+      border: 1px solid var(--kt-border);
+      border-radius: 0.5rem;
       padding: 1rem;
-      background: #fff;
+      background: var(--kt-panel);
     }
 
     .stat-value {
       display: block;
-      color: #363636;
       font-family: "Google Sans", sans-serif;
       font-size: 1.45rem;
       font-weight: 700;
       line-height: 1.1;
+      background: var(--kt-grad);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .stat-label {
       display: block;
-      color: #6a6a6a;
+      color: var(--kt-text-faint);
       font-size: 0.92rem;
       margin-top: 0.3rem;
     }
 
     .claim-box {
-      border-left: 4px solid #363636;
-      background: #fafafa;
+      border-left: 4px solid var(--kt-accent-2);
+      background: var(--kt-panel);
       padding: 1.25rem 1.5rem;
       margin-top: 1.25rem;
-      border-radius: 0.25rem;
+      border-radius: 0.3rem;
+      position: relative;
+      overflow: hidden;
+      color: var(--kt-text-dim);
     }
-
+    .claim-box::before {
+      content: '';
+      position: absolute; left: -4px; top: 0; bottom: 0; width: 4px;
+      background: var(--kt-grad);
+      animation: claim-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes claim-pulse {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
     .claim-box strong {
-      color: #363636;
+      background: var(--kt-grad);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .contribution-card {
-      border: 1px solid #e8e8e8;
-      border-radius: 0.45rem;
+      border: 1px solid var(--kt-border);
+      border-radius: 0.5rem;
       padding: 1.25rem;
-      background: #fff;
+      background: var(--kt-panel);
       height: 100%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
     .contribution-card h3 {
       font-family: "Google Sans", sans-serif;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      color: var(--kt-text);
     }
 
+    .footer {
+      background: var(--kt-bg-2);
+      border-top: 1px solid var(--kt-border);
+    }
     .footer .icon-link {
-      color: #363636;
+      color: var(--kt-text-dim);
       font-size: 1.35rem;
       margin: 0 0.5rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
     }
+    .footer .icon-link:hover {
+      color: var(--kt-accent-3);
+      transform: translateY(-2px);
+    }
+    .footer p, .footer .content p { color: var(--kt-text-faint); }
 
     pre {
       white-space: pre-wrap;
       word-break: break-word;
+      background: var(--kt-panel) !important;
+      color: var(--kt-text) !important;
+      border: 1px solid var(--kt-border);
+    }
+    code {
+      background: rgba(34,211,238,0.1) !important;
+      color: var(--kt-accent-3) !important;
     }
 
     .faq-item {
-      border: 1px solid #e8e8e8;
-      border-radius: 0.35rem;
-      background: #fff;
+      border: 1px solid var(--kt-border);
+      border-radius: 0.5rem;
+      background: var(--kt-panel);
       margin-bottom: 0.75rem;
       overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
     .faq-item summary {
@@ -207,6 +357,7 @@
       font-family: "Google Sans", sans-serif;
       font-weight: 700;
       list-style: none;
+      color: var(--kt-text);
     }
 
     .faq-item summary::-webkit-details-marker {
@@ -217,7 +368,7 @@
       content: "+";
       display: inline-block;
       width: 1.1rem;
-      color: #363636;
+      color: var(--kt-accent-3);
       font-weight: 700;
     }
 
@@ -227,8 +378,186 @@
 
     .faq-item .faq-answer {
       padding: 0 1.25rem 1.1rem 2.35rem;
-      color: #4a4a4a;
+      color: var(--kt-text-dim);
       line-height: 1.6;
+    }
+
+    /* ---------- alternating section backgrounds (dark mode override of Bulma is-light) ---------- */
+    section.section { background: var(--kt-bg); }
+    section.section.is-light { background: var(--kt-bg-2) !important; }
+
+    /* ---------- buttons ---------- */
+    .button.is-dark {
+      background: var(--kt-grad);
+      background-size: 200% auto;
+      border: none;
+      color: #fff;
+      transition: background-position 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .button.is-dark:hover {
+      background-position: 100% 0;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(6,182,212,0.4);
+      color: #fff;
+    }
+
+    /* ---------- hover-lift cards ---------- */
+    .contribution-card:hover,
+    .stat-item:hover,
+    .faq-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 32px rgba(6,182,212,0.18);
+      border-color: rgba(34,211,238,0.4);
+    }
+
+    .stat-item { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+
+    .figure-panel img,
+    .figure-image {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      border-radius: 0.4rem;
+      box-shadow: 0 0 0 1px var(--kt-border);
+    }
+    .figure-panel:hover img,
+    figure:hover .figure-image {
+      transform: scale(1.015);
+      box-shadow: 0 0 0 1px rgba(34,211,238,0.4), 0 16px 36px rgba(0,0,0,0.45);
+    }
+
+    /* ---------- animated section title underline ---------- */
+    section .title.is-3 {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.4rem;
+    }
+    section .title.is-3::after {
+      content: '';
+      position: absolute; left: 0; bottom: 0; height: 3px; width: 64px;
+      background: var(--kt-grad);
+      border-radius: 3px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.6s ease;
+      box-shadow: 0 0 12px rgba(34,211,238,0.6);
+    }
+    section .title.is-3.in-view::after,
+    section.in-view .title.is-3::after {
+      transform: scaleX(1);
+    }
+
+    /* ---------- scroll-reveal ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- story flipbook panels ---------- */
+    .story-panel {
+      border: 1px solid var(--kt-border);
+      border-radius: 0.6rem;
+      background: var(--kt-panel);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .story-panel:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(6,182,212,0.28);
+      border-color: rgba(34,211,238,0.45);
+    }
+    .story-panel .story-panel-head {
+      padding: 1rem 1.25rem 0.75rem;
+    }
+    .story-panel .story-source {
+      font-family: "Google Sans", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--kt-accent-3);
+      font-weight: 700;
+    }
+    .story-panel h3.title {
+      margin: 0.2rem 0 0;
+    }
+
+    .flipbook {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      perspective: 1200px;
+      overflow: hidden;
+      background: #060912;
+      margin-top: 0.75rem;
+    }
+    .flipbook::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      animation: gallery-blink 4s ease-in-out infinite;
+    }
+    @keyframes gallery-blink {
+      0%, 100% { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 0 0 rgba(34,211,238,0); }
+      50% { box-shadow: inset 0 0 0 1px rgba(34,211,238,0.5), 0 0 30px 3px rgba(34,211,238,0.25); }
+    }
+    .flipbook .flip-img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      backface-visibility: hidden; transform-origin: center;
+      animation-name: story-flip;
+      animation-duration: 10s;
+      animation-iteration-count: infinite;
+      animation-timing-function: cubic-bezier(.45,0,.2,1);
+      border-radius: 0;
+    }
+    .flipbook .flip-img:nth-child(1) { animation-delay: 0s; }
+    .flipbook .flip-img:nth-child(2) { animation-delay: 2s; }
+    .flipbook .flip-img:nth-child(3) { animation-delay: 4s; }
+    .flipbook .flip-img:nth-child(4) { animation-delay: 6s; }
+    .flipbook .flip-img:nth-child(5) { animation-delay: 8s; }
+    @keyframes story-flip {
+      0%   { opacity: 0; transform: rotateY(85deg) scale(0.92); }
+      4%   { opacity: 1; transform: rotateY(0deg) scale(1); }
+      15%  { opacity: 1; transform: rotateY(0deg) scale(1); }
+      20%  { opacity: 0; transform: rotateY(-85deg) scale(0.92); }
+      100% { opacity: 0; transform: rotateY(-85deg) scale(0.92); }
+    }
+    .flipbook .scene-pips {
+      position: absolute; left: 0; right: 0; bottom: 10px;
+      display: flex; justify-content: center; gap: 6px; z-index: 2;
+    }
+    .flipbook .scene-pips span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      animation-name: pip-pulse;
+      animation-duration: 10s;
+      animation-iteration-count: infinite;
+    }
+    .flipbook .scene-pips span:nth-child(1) { animation-delay: 0s; }
+    .flipbook .scene-pips span:nth-child(2) { animation-delay: 2s; }
+    .flipbook .scene-pips span:nth-child(3) { animation-delay: 4s; }
+    .flipbook .scene-pips span:nth-child(4) { animation-delay: 6s; }
+    .flipbook .scene-pips span:nth-child(5) { animation-delay: 8s; }
+    @keyframes pip-pulse {
+      0%, 20% { background: var(--kt-accent-3); box-shadow: 0 0 8px var(--kt-accent-3); width: 16px; }
+      20.001%, 100% { background: rgba(255,255,255,0.3); box-shadow: none; width: 6px; }
+    }
+
+    .story-panel .story-caption {
+      padding: 0.9rem 1.25rem 1.25rem;
+      color: var(--kt-text-dim);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .story-panel .story-meaning {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-family: "Google Sans", sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      background: var(--kt-grad);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     @media screen and (max-width: 768px) {
@@ -350,7 +679,7 @@
               </span>
 
               <span class="link-block">
-                <a href="https://github.com/JamunaSMurthy/kathatrace-demo" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://jamunasmurthy.github.io/kathatrace-demo" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="far fa-images"></i></span>
                   <span>Demo</span>
                 </a>
@@ -649,30 +978,202 @@
         <h2 class="title is-3">Representative Story Examples</h2>
         <div class="content has-text-justified">
           <p>
-            KathaTrace draws from three distinct story sources in the `data/Stories` folder. Below are one representative example from each source, illustrating the kinds of narrative transitions used in evaluation.
+            KathaTrace draws from three classical story sources in the `data/Stories` folder — Aesop's Fables, the
+            Panchatantra, and The Ocean of Story. Below are all nine demo storyboards, three from each source, each
+            flipping automatically through its five scenes.
           </p>
         </div>
       </div>
     </div>
 
-    <div class="columns is-desktop">
-      <div class="column">
-        <h3 class="title is-4">Aesop’s Fables</h3>
-        <p>
-          The Cat and the Birds: a compact fable where the cat's intent and the moral consequence hinge on a single visual transition.
-        </p>
+    <div class="columns is-multiline">
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Aesop’s Fables</span>
+            <h3 class="title is-4">The Cat and the Birds</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Cat%20and%20the%20Birds/Scene1.png" alt="The Cat and the Birds — scene 1">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Cat%20and%20the%20Birds/Scene2.png" alt="The Cat and the Birds — scene 2">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Cat%20and%20the%20Birds/Scene3.png" alt="The Cat and the Birds — scene 3">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Cat%20and%20the%20Birds/Scene4.png" alt="The Cat and the Birds — scene 4">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Cat%20and%20the%20Birds/Scene5.png" alt="The Cat and the Birds — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A compact fable where the cat's intent and the moral consequence hinge on a single visual transition.
+            <span class="story-meaning">Beware deceptive appearances.</span>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <h3 class="title is-4">Panchatantra</h3>
-        <p>
-          The Monkey and the Wedge: a strategic tale where action and causality must survive scene-to-scene visualization.
-        </p>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Aesop’s Fables</span>
+            <h3 class="title is-4">The Peacock and the Crane</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Peacock%20and%20the%20Crane/Scene1.png" alt="The Peacock and the Crane — scene 1">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Peacock%20and%20the%20Crane/Scene2.png" alt="The Peacock and the Crane — scene 2">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Peacock%20and%20the%20Crane/Scene3.png" alt="The Peacock and the Crane — scene 3">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Peacock%20and%20the%20Crane/Scene4.png" alt="The Peacock and the Crane — scene 4">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Peacock%20and%20the%20Crane/Scene5.png" alt="The Peacock and the Crane — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A vain display of plumage meets a quiet act of flight, testing whether ability survives the comparison.
+            <span class="story-meaning">Ability matters more than beauty.</span>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <h3 class="title is-4">The Ocean of Story</h3>
-        <p>
-          The Disguise of Vāsavadattā: a richly layered narrative that highlights intentional and emotional continuity across transitions.
-        </p>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Aesop’s Fables</span>
+            <h3 class="title is-4">The Wolf and the Lamb</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Wolf%20and%20the%20Lamb/Scene1.png" alt="The Wolf and the Lamb — scene 1">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Wolf%20and%20the%20Lamb/Scene2.png" alt="The Wolf and the Lamb — scene 2">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Wolf%20and%20the%20Lamb/Scene3.png" alt="The Wolf and the Lamb — scene 3">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Wolf%20and%20the%20Lamb/Scene4.png" alt="The Wolf and the Lamb — scene 4">
+            <img class="flip-img" src="./data/Stories/Aesop%E2%80%99s%20Fables/The%20Wolf%20and%20the%20Lamb/Scene5.png" alt="The Wolf and the Lamb — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A false accusation collapses under scrutiny, yet the outcome depends on power rather than truth.
+            <span class="story-meaning">Power can ignore justice.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Panchatantra</span>
+            <h3 class="title is-4">The Monkey and the Wedge</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Monkey%20and%20the%20Wedge/Scene1.png" alt="The Monkey and the Wedge — scene 1">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Monkey%20and%20the%20Wedge/Scene2.png" alt="The Monkey and the Wedge — scene 2">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Monkey%20and%20the%20Wedge/Scene3.png" alt="The Monkey and the Wedge — scene 3">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Monkey%20and%20the%20Wedge/Scene4.png" alt="The Monkey and the Wedge — scene 4">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Monkey%20and%20the%20Wedge/Scene5.png" alt="The Monkey and the Wedge — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A strategic tale where action and causality must survive scene-to-scene visualization.
+            <span class="story-meaning">Do not meddle without understanding.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Panchatantra</span>
+            <h3 class="title is-4">The Jackal and the Drum</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Jackal%20and%20the%20Drum/Scene1.png" alt="The Jackal and the Drum — scene 1">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Jackal%20and%20the%20Drum/Scene2.png" alt="The Jackal and the Drum — scene 2">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Jackal%20and%20the%20Drum/Scene3.png" alt="The Jackal and the Drum — scene 3">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Jackal%20and%20the%20Drum/Scene4.png" alt="The Jackal and the Drum — scene 4">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Jackal%20and%20the%20Drum/Scene5.png" alt="The Jackal and the Drum — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A frightening sound on an empty battlefield turns out to be nothing once investigated closely.
+            <span class="story-meaning">Inquiry overcomes fear.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">Panchatantra</span>
+            <h3 class="title is-4">The Fall and Rise of a Merchant</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Fall%20and%20Rise%20of%20a%20Merchant/Scene1.png" alt="The Fall and Rise of a Merchant — scene 1">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Fall%20and%20Rise%20of%20a%20Merchant/Scene2.png" alt="The Fall and Rise of a Merchant — scene 2">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Fall%20and%20Rise%20of%20a%20Merchant/Scene3.png" alt="The Fall and Rise of a Merchant — scene 3">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Fall%20and%20Rise%20of%20a%20Merchant/Scene4.png" alt="The Fall and Rise of a Merchant — scene 4">
+            <img class="flip-img" src="./data/Stories/Panchatantra/The%20Fall%20and%20Rise%20of%20a%20Merchant/Scene5.png" alt="The Fall and Rise of a Merchant — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A merchant's fortune collapses and is rebuilt slowly through patient, honest labor.
+            <span class="story-meaning">Humility restores honor.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">The Ocean of Story</span>
+            <h3 class="title is-4">The Disguise of Vāsavadattā</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Disguise%20of%20V%C4%81savadatt%C4%81/Scene1.png" alt="The Disguise of Vāsavadattā — scene 1">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Disguise%20of%20V%C4%81savadatt%C4%81/Scene2.png" alt="The Disguise of Vāsavadattā — scene 2">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Disguise%20of%20V%C4%81savadatt%C4%81/Scene3.png" alt="The Disguise of Vāsavadattā — scene 3">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Disguise%20of%20V%C4%81savadatt%C4%81/Scene4.png" alt="The Disguise of Vāsavadattā — scene 4">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Disguise%20of%20V%C4%81savadatt%C4%81/Scene5.png" alt="The Disguise of Vāsavadattā — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A richly layered narrative that highlights intentional and emotional continuity across transitions.
+            <span class="story-meaning">Perseverance protects future success.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">The Ocean of Story</span>
+            <h3 class="title is-4">The Fall of Sunda and Upasunda</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Fall%20of%20Sunda%20and%20Upasunda/Scene1.png" alt="The Fall of Sunda and Upasunda — scene 1">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Fall%20of%20Sunda%20and%20Upasunda/Scene2.png" alt="The Fall of Sunda and Upasunda — scene 2">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Fall%20of%20Sunda%20and%20Upasunda/Scene3.png" alt="The Fall of Sunda and Upasunda — scene 3">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Fall%20of%20Sunda%20and%20Upasunda/Scene4.png" alt="The Fall of Sunda and Upasunda — scene 4">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Fall%20of%20Sunda%20and%20Upasunda/Scene5.png" alt="The Fall of Sunda and Upasunda — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            Two inseparable brothers fall to rivalry once jealousy over a single desire divides their shared strength.
+            <span class="story-meaning">Jealousy destroys strength.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4">
+        <div class="story-panel">
+          <div class="story-panel-head">
+            <span class="story-source">The Ocean of Story</span>
+            <h3 class="title is-4">The Stratagem of King Puṇyasena</h3>
+          </div>
+          <div class="flipbook">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Stratagem%20of%20King%20Pu%E1%B9%87yasena/Scene1.png" alt="The Stratagem of King Puṇyasena — scene 1">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Stratagem%20of%20King%20Pu%E1%B9%87yasena/Scene2.png" alt="The Stratagem of King Puṇyasena — scene 2">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Stratagem%20of%20King%20Pu%E1%B9%87yasena/Scene3.png" alt="The Stratagem of King Puṇyasena — scene 3">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Stratagem%20of%20King%20Pu%E1%B9%87yasena/Scene4.png" alt="The Stratagem of King Puṇyasena — scene 4">
+            <img class="flip-img" src="./data/Stories/The%20Ocean%20of%20Story/The%20Stratagem%20of%20King%20Pu%E1%B9%87yasena/Scene5.png" alt="The Stratagem of King Puṇyasena — scene 5">
+            <div class="scene-pips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-caption">
+            A besieged king feigns retreat, luring his stronger enemy into a trap sprung from cunning, not force.
+            <span class="story-meaning">Strategy can defeat force.</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1149,6 +1650,40 @@
         target.classList.toggle("is-active");
       });
     });
+
+    // Scroll-reveal: fade/slide sections in as they enter the viewport, and
+    // animate each section title's underline once the section is visible.
+    var sections = Array.prototype.slice.call(document.querySelectorAll("section.section"), 0);
+    sections.forEach(function (section) {
+      var children = Array.prototype.slice.call(section.querySelectorAll(":scope > .container > *"), 0);
+      children.forEach(function (child, i) {
+        child.classList.add("reveal");
+        child.style.transitionDelay = (i * 0.08) + "s";
+      });
+    });
+
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            if (entry.target.classList.contains("section")) {
+              observer.unobserve(entry.target);
+            }
+          }
+        });
+      }, { threshold: 0.15 });
+
+      sections.forEach(function (section) {
+        section.classList.add("in-view-target");
+        observer.observe(section);
+        section.querySelectorAll(".reveal").forEach(function (el) { observer.observe(el); });
+      });
+    } else {
+      // No IntersectionObserver support: just show everything immediately.
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in-view"); });
+      sections.forEach(function (s) { s.classList.add("in-view"); });
+    }
   });
 </script>
 
